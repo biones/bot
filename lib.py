@@ -11,17 +11,9 @@ import tweepy
 
 def getApiInstance(account="fukushibot"):
     if account!="fukushibot":
-        consumer_key = "ytgLgAJvasRFLRE5KO0SjQGVA"
-        consumer_secret = "eOpzJymBMM0tcdgz8sI2rn9eaIIJujp6eIUEPvO1EEJSshdzBl"
-        access_token="1288065283219832834-bKhVgcHIdcZcxM94Z8BOE6fsF3LqfD"
-        access_token_secret = "g7602OaeCZPa78LBfV4nYSOFYV8AEqm6seZOIfgXuWut9"
-
+        consumer_key = ""
     else:
-        consumer_key = "2JAQTFMKPZMx1KZGeveIldfOs"
-        consumer_secret = "QjbrVcxWpeI6DiRzusqi05UnRu4B7VTiZwjFx8RozEDJlYhTHV"
-        access_token="1585874984328900608-DqxUS4F1BALfXThaK2irrr5rGtH4eh"
-        access_token_secret = "m2SSsQgSr6HAzEdVOs0lzkkw9gLxdvR17YjbdR9UNyP6N"
-
+        consumer_key = ""
         
     # OAuth認証
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
