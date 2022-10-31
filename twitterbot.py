@@ -21,23 +21,25 @@ def build_tweet(d,user):
         locstr=locstr[:8]        
     else:
          locstr=""
-            
+
+    ptweet=""
     if d["pickup"]:     
         nname=7
         if "士" in d["search_word"]:
             if len(locstr)>0:
                 locstr+="の"
-            ptweet=+user.name[:13]+"@"+user.screen_name+"さん "+tweet
+            ptweet=user.name[:13]+"@"+user.screen_name+"さん "+tweet
         elif "議" in d["condition_profile"]: 
             if len(locstr)>0:
                 locstr+="在住という事になっている議員の"
             else:
                 locstr="議員の"
-            ptweet=locstr+user.name[:nname]+"@"+user.screen_name[:nname]+" さん "+tweet            
+
+            ptweet=locstr+user.name[:nname]+"@"+user.screen_name+" さん "+tweet          
         else:
-            ptweet="#"+d["search_word"]+" を利用中の"+locstr+user.name[:nname]+"@"+user.screen_name[:nname]+"さん "+tweet
+            ptweet="#"+d["search_word"]+" を利用中の"+locstr+user.name[:nname]+"@"+user.screen_name+"さん "+tweet
     else:
-        ptweet=tweet            
+        ptweet=tweet
         
     m=re.search("https?://[\w/:%#\$&\?\(\)~\.=\+\-]+",ptweet)
     #l=len(m.group())
@@ -97,7 +99,7 @@ def search(search_query):
 
 
 def run_bot(df):
-    global api,ST
+    global api,ST,account
     #df.weight[pd.isna(df.weight)]=1
     tmp=[]
     for w in tdf.weight:
@@ -106,19 +108,39 @@ def run_bot(df):
         tmp.append(w)
     df.weight=tmp
     
-    n=df.weight    
+    n=df.weight 
+    import time
+    t=time.time()
+    t_next=t+3*3600
     while True:
+        
+        account="fukushibot"
+        #if np.random.rand()<ST/(60*120):
+        if time.time()>t_next:
+            account="other"
+            api=lib.getApiInstance(account)
+            t_next=time.time()+3*3600
+        else:
+            api=lib.getApiInstance(account)
+
+
         d=df.iloc[np.random.choice(range(df.shape[0]),p=n/np.sum(n))]
         key=d.search_word
         print("wt",key)
-  
+        print(account)
+
+        #if key!="社会福祉士":
+        #    continue
+
         if d.tweettype=="tweet":
+            if account=="fukushibot":
+                continue
             tweets=d["tweet"]
             #print(np.random.choice(tweets,1)[0])
             try:
                 api.update_status(d.tweet)
             except:
-                continue
+                pass
             #time.sleep(ST)
             print("tweeted")
             
@@ -132,7 +154,7 @@ def run_bot(df):
         elif d.tweettype=="search_profile":
             try:
                 users=search_profile(key)    
-                print("users",len(users))
+                #print("users",len(users))
                 if len(users)<=0:
                     continue
                 reply(d,np.random.choice(users))            
@@ -144,7 +166,7 @@ def run_bot(df):
             
         #print(tweets)
         #print("aft",d)
-            
+        
         time.sleep(ST)
 
 def insertusertable(r):
@@ -259,7 +281,7 @@ def retweetWithComment(d,tweets,texts=[]):
             
         return
 
-        
+    
 gtest=False
 
 Ntweet=50
@@ -267,11 +289,10 @@ if gtest:
     ST=1000
     Ntweet=int(50)
 else:
-    ST=6000
+    ST=1200
     Ntweet=int(100)
 
 
-api=lib.getApiInstance()
 #discord https://discord.com/invite/HpNBWw7KYt
 dbname = 'fukusi.db'
 conn = sqlite3.connect(dbname)

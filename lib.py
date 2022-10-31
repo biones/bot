@@ -9,15 +9,20 @@ import pandas as pd
 import tweepy
 
 
-def getApiInstance():
-    # 認証キーの設定
-    consumer_key = "2ZWxxy4OEzX1xJoRTxaboJr5a"
-    consumer_secret = "8NSGfwQDAD3qcmVbq8L38ytmVCVmLmdjA8wYOkbbUOAggvdMWH"
-    #bear_token = "AAAAAAAAAAAAAAAAAAAAAGdsaAEAAAAAy2Pw7HhOvAZBPdtefTRCKHVm%2FHo%3D5GlZvXKJMsErkPXJZp6twQEZUyH1GeerkFEshmhVRoHiU2QtR6"
-    access_token="1288065283219832834-bz4T95Lqire0Q2EesLAG3s6nSrt2mc"
-    access_token_secret = "OtfoQVuBnnGx3LuYYFIlx8vkEot254g7bidjLcB7C0BQz"
+def getApiInstance(account="fukushibot"):
+    if account!="fukushibot":
+        consumer_key = "ytgLgAJvasRFLRE5KO0SjQGVA"
+        consumer_secret = "eOpzJymBMM0tcdgz8sI2rn9eaIIJujp6eIUEPvO1EEJSshdzBl"
+        access_token="1288065283219832834-bKhVgcHIdcZcxM94Z8BOE6fsF3LqfD"
+        access_token_secret = "g7602OaeCZPa78LBfV4nYSOFYV8AEqm6seZOIfgXuWut9"
 
-    
+    else:
+        consumer_key = "2JAQTFMKPZMx1KZGeveIldfOs"
+        consumer_secret = "QjbrVcxWpeI6DiRzusqi05UnRu4B7VTiZwjFx8RozEDJlYhTHV"
+        access_token="1585874984328900608-DqxUS4F1BALfXThaK2irrr5rGtH4eh"
+        access_token_secret = "m2SSsQgSr6HAzEdVOs0lzkkw9gLxdvR17YjbdR9UNyP6N"
+
+        
     # OAuth認証
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
